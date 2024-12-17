@@ -67,4 +67,11 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+  config.active_storage.routes_prefix = '/rails/active_storage'
+  config.active_storage.resolve_model_to_route = :rails_storage_proxy
+
+  config.active_storage.service_urls_expire_in = 5.minutes
+
+  # Add URL options for local file serving (for generating URLs in the local environment)
+  config.active_storage.default_url_options = { host: 'localhost:3000' }
 end

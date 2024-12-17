@@ -1,0 +1,51 @@
+<h1>My Files</h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Upload a New File</h2>
+      <%= form_with model: UserFile.new, url: files_path, local: true, html: { class: "form" } do |form| %>
+        <div class="form-group">
+          <%= form.label :title %>
+          <%= form.text_field :title, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :description %>
+          <%= form.text_area :description, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :uploaded_file %>
+          <%= form.file_field :uploaded_file, class: "form-control" %>
+        </div>
+        <%= form.submit "Upload File", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+
+    <div class="col-md-6">
+      <h2>Uploaded Files</h2>
+      <% if @user_files.present? %>
+        <% @user_files.each do |user_file| %>
+          <div class="card my-2">
+            <div class="card-body">
+              <h5 class="card-title"><%= user_file.title %></h5>
+              <p class="card-text"><%= user_file.description %></p>
+              <p>
+                <%= link_to "Download", rails_blob_path(user_file.uploaded_file, disposition: 'attachment'), class: "btn btn-success btn-sm" %>
+              <p>
+  <%= link_to "Share", file_public_url(user_file.public_url), method: :get, class: "btn btn-info btn-sm" %>
+  <% if user_file.public_url.present? %>
+    <br />
+    <strong>Shared URL:</strong> <%= file_public_url(user_file.public_url) %> <!-- Display the full shared URL -->
+  <% end %>
+</p>
+                <%= link_to "Delete", file_path(user_file), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No files uploaded yet.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
